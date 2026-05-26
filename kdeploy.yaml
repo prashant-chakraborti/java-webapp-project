@@ -28,10 +28,10 @@ metadata:
     app: mota-lbl
 spec:
   selector:
-    app: mota_build-lbl
+    app: mota-lbl
 
   type: NodePort
   ports:
-  - nodePort: 
+  - nodePort: 30020
     port: 8080
     targetPort: 8080
