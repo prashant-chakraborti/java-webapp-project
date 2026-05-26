@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mota_1st_deploy
+  name: mota-1st-deploy
   labels:
     app: mota_build-lbl
 spec:
