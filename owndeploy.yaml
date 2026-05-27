@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 2nd-deploy
+  name: second-deploy
   labels:
-    app: 2nd-deploy-lbl
+    app: second-deploy-lbl
 spec:
   replicas: 3
   selector:
@@ -24,7 +24,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 2nd-deploy-np-service
+  name: second-deploy-np-service
 spec:
   type: NodePort
   selector:
