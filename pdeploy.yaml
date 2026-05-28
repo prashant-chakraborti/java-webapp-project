@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prashant-deployment              # Deployment name
+  labels:
+    app: prashant-lbl
+spec:
+  replicas: 3                          # Number of Pods
+  selector:
+    matchLabels:
+      app: prashant-webapp-lbl
+  template:
+    metadata:
+      labels:
+        app: prashant-webapp-lbl
+    spec:
+      containers:
+        - name: prashant-container
+          image: prashant6395/prashant_image:v1.0   # Image from DockerHub
+          ports:
+            - containerPort: 8080                 # Expose app port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prashant-np-service
+spec:
+  type: NodePort
+  selector:
+    app: prashant-webapp-lbl
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30081   # External port (must be 30000–32767)
