@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: Motapa-np-svc          # e.g., myapp-np-service
+  name: motapa-np-svc          # e.g., myapp-np-service
 spec:
   type: NodePort
   selector:
