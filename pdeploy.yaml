@@ -1,34 +1,40 @@
+# =============================
+# DEPLOYMENT
+# =============================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prashant-deployment              # Deployment name
+  name: learning-deployment          # Change this - your deployment name
   labels:
-    app: prashant-lbl
+    app: banking-app                # Change this - your app label
 spec:
-  replicas: 3                          # Number of Pods
+  replicas: 3                  # Change this - number of pods
   selector:
     matchLabels:
-      app: prashant-webapp-lbl
+      app: banking-app              # Must match labels.app above
   template:
     metadata:
       labels:
-        app: prashant-webapp-lbl
+        app: banking-app           # Must match selector.matchLabels.app above
     spec:
       containers:
-        - name: prashant-container
-          image: prashant6395/prashant_image:v1.0   # Image from DockerHub
-          ports:
-            - containerPort: 8080                 # Expose app port
+      - name: learning-container     # Change this - your container name
+        image: prashant6395/bankapp-image:v3.0  # Change this - e.g. nginx:latest or tomcat:9.0
+        ports:
+        - containerPort: 8080  # Change this - port your app runs on inside container
+ 
 ---
+# =============================
+# NODEPORT SERVICE
+# =============================
 apiVersion: v1
 kind: Service
 metadata:
-  name: prashant-np-service
+  name: learning-deployment-svc    # Change this - your service name
 spec:
   type: NodePort
   selector:
-    app: prashant-webapp-lbl
+    app: banking-app                # Must match deployment labels.app above
   ports:
-    - port: 8080
-      targetPort: 8080
-      nodePort: 30081   # External port (must be 30000–32767)
+  - port: 80                   # ClusterIP port (internal)
+    targetPort: 8080           # Must match containerPort above
