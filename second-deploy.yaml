@@ -45,7 +45,7 @@ spec:
   selector:
     app: second-deploy-lbl             # Must match deployment labels.app above
   ports:
-  - port: 8080                      # ClusterIP port (internal)
+  - port: 80                      # ClusterIP port (internal)
     targetPort: 8080                # Must match containerPort above
     # nodePort:                     # Optional - leave commented for auto assign
                                     # Or set manually e.g. 30020 (range 30000-32767)
