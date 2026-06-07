@@ -1,33 +1,51 @@
+# =============================
+# DEPLOYMENT
+# =============================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: new-deployment       # e.g., myapp-deployment
+  name: second-deployment        # Change this - your deployment name
   labels:
-    app: new-deployment-lbl            # e.g., myapp
+    app: second-deploy-lbl             # Change this - your app label
 spec:
-  replicas: 5     # e.g., 3
+  replicas: 5                        # Change this - number of pods e.g. 3
   selector:
     matchLabels:
-      app: motapa-lbl          # must match Pod labels below
+      app: second-deploy-lbl           # Must match labels.app above
   template:
     metadata:
       labels:
-        app: motapa-lbl        # Pod label
+        app: second-deploy-lbl        # Must match selector.matchLabels.app above
     spec:
       containers:
-        - name: new-container     # e.g., myapp-container
-          image: prashant6395/new-image:v2.0   # e.g., user/repo:latest
-          ports:
-            - containerPort: 8080   # e.g., 8080
+      - name: second-deploy-container   # Change this - your container name
+        image: prashant6395/second-deploy-image:v4.0       # Change this - e.g. prashant6395/myapp:v1.0
+        ports:
+        - containerPort: 8080       # Change this - port your app runs on
+        volumeMounts:
+        - name: second-deploy-volume    # Must match volume name below
+          mountPath: /usr/local/tomcat/webapps   # Change this - path inside container
+ 
+      volumes:
+      - name: second-deploy-volume      # Must match volumeMounts name above
+        hostPath:
+          path: /tmp/second-deploy-data     # Change this - path on the host/node machine e.g. /tmp/mydata
+          type: DirectoryOrCreate   # Creates directory if it doesn't exist
+ 
 ---
+# =============================
+# NODEPORT SERVICE
+# =============================
 apiVersion: v1
 kind: Service
 metadata:
-  name: motapa-np-svc          # e.g., myapp-np-service
+  name: second-deploy-np-service           # Change this - your service name
 spec:
   type: NodePort
   selector:
-    app: motapa-lbl            # must match Pod labels above
+    app: second-deploy-lbl             # Must match deployment labels.app above
   ports:
-    - port: 8080           # e.g., 8080 (inside cluster)
-      targetPort: 8080   # must match containerPort above
+  - port: 8080                      # ClusterIP port (internal)
+    targetPort: 8080                # Must match containerPort above
+    # nodePort:                     # Optional - leave commented for auto assign
+                                    # Or set manually e.g. 30020 (range 30000-32767)
