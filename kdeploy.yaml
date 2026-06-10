@@ -1,37 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mota-1st-deploy
-  labels:
-    app: mota_build-lbl
+  name: cicd-deployment
+  namespace: 
 spec:
-  replicas: 3
+  replicas: 15
   selector:
     matchLabels:
-      app: mota-lbl
+      app: cicd-lbl
   template:
     metadata:
       labels:
-        app: mota-lbl
+        app: cicd-lbl
     spec:
       containers:
-      - name: mota-container
-        image: prashant6395/mota-webapp
+      - name: cicd-container
+        image: prashant6395/cicd-image
         ports:
         - containerPort: 8080
+        volumeMounts:
+        - mountPath: /usr/local/tomcat/webapps
+          name: mota-vol
+      volumes:
+      - name: mota-vol
+        hostPath:
+          path: /home/devopsadmin
+          type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mota-np-service
-  labels:
-    app: mota-lbl
+  name: cicd-np-service
+  namespace: 
 spec:
-  selector:
-    app: mota-lbl
-
   type: NodePort
+  selector:
+    app: cicd-lbl
   ports:
-  - nodePort: 30020
-    port: 8080
+  - port: 8080
     targetPort: 8080
+    nodePort:
