@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: cicd-container
-        image: prashant6395/cicd-image
+        image: prashant6395/cicd-image:v1
         ports:
         - containerPort: 8080
         volumeMounts:
