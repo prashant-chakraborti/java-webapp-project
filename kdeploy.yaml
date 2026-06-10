@@ -17,14 +17,6 @@ spec:
         image: prashant6395/cicd_image:v1
         ports:
         - containerPort: 8080
-        volumeMounts:
-        - mountPath: /usr/local/tomcat/webapps
-          name: mota-vol
-      volumes:
-      - name: mota-vol
-        hostPath:
-          path: /home/devopsadmin
-          type: DirectoryOrCreate
 ---
 apiVersion: v1
 kind: Service
