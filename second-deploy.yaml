@@ -1,51 +1,34 @@
-# =============================
-# DEPLOYMENT
-# =============================
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: second-deployment        # Change this - your deployment name
-  labels:
-    app: second-deploy-lbl             # Change this - your app label
+  name: cicd-deployment
+  namespace: 
 spec:
-  replicas: 5                        # Change this - number of pods e.g. 3
+  replicas: 3
   selector:
     matchLabels:
-      app: second-deploy-lbl           # Must match labels.app above
+      app: cicd-lbl
   template:
     metadata:
       labels:
-        app: second-deploy-lbl        # Must match selector.matchLabels.app above
+        app: cicd-lbl
     spec:
       containers:
-      - name: second-deploy-container   # Change this - your container name
-        image: prashant6395/second-deploy-image:v4.0       # Change this - e.g. prashant6395/myapp:v1.0
+      - name: cicd-container
+        image: prashant6395/cicd_image:v1.0
         ports:
-        - containerPort: 8080       # Change this - port your app runs on
-        volumeMounts:
-        - name: second-deploy-volume    # Must match volume name below
-          mountPath: /usr/local/tomcat/webapps   # Change this - path inside container
- 
-      volumes:
-      - name: second-deploy-volume      # Must match volumeMounts name above
-        hostPath:
-          path: /tmp/second-deploy-data     # Change this - path on the host/node machine e.g. /tmp/mydata
-          type: DirectoryOrCreate   # Creates directory if it doesn't exist
- 
+        - containerPort: 8080
 ---
-# =============================
-# NODEPORT SERVICE
-# =============================
 apiVersion: v1
 kind: Service
 metadata:
-  name: second-deploy-np-service           # Change this - your service name
+  name: cicd-np
+  namespace: 
 spec:
   type: NodePort
   selector:
-    app: second-deploy-lbl             # Must match deployment labels.app above
+    app: cicd-lbl
   ports:
-  - port: 80                      # ClusterIP port (internal)
-    targetPort: 8080                # Must match containerPort above
-    # nodePort:                     # Optional - leave commented for auto assign
-                                    # Or set manually e.g. 30020 (range 30000-32767)
+  - port: 8080
+    targetPort: 8080
+    nodePort:
